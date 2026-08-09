@@ -11,4 +11,3 @@ services:
       DATABASE_PORT: 54327
       DATABASE_USERNAME: Anakachai
       DATABASE_PASSWORD: P@ssw0rd1
-      
