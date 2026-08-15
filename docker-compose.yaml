@@ -8,3 +8,11 @@ services:
       - POSTGRES_PASSWORD=P@ssw0rd1
       - POSTGRES_USER=Anakachai
       - POSTGRES_DB=Anakachai
+    image: postgres
+    container_name: my_db
+    ports:
+      - 54327:5432
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_DB}
