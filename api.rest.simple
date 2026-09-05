@@ -1,34 +1,88 @@
 # REST
 
-### Login
-POST http://localhost:9093/admin/login
+# ============================================================
+# ADMIN
+# ============================================================
+
+### Login (Admin)
+
+POST http://localhost:8080/admin/login
 Content-Type: application/json
 
 {
-    "email": "",
-    "password": "",
-    "rememberMe": true
+  "email": "",
+  "password": "",
+  "rememberMe": true
 }
+
+
+### Register (Admin)
+
+POST http://localhost:8080/admin/register-admin
+Content-Type: application/json
+
+{
+  "firstname": "",
+  "lastname": "",
+  "email": "",
+  "password": ""
+}
+
+
+### Forgot Password (Admin)
+
+POST http://localhost:8080/admin/forgot-password
+Content-Type: application/json
+
+{
+  "email": ""
+}
+
+
+### Profile (Admin)
+
+GET http://localhost:8080/admin/users/me
+Authorization: Bearer YOUR_ADMIN_TOKEN
+
+
+# ============================================================
+# USER
+# ============================================================
 
 ### Login (User)
-POST http://localhost:9093/api/auth/local
+
+POST http://localhost:8080/api/auth/local
 Content-Type: application/json
 
 {
-    "identifier": "",
-    "password": ""
+  "identifier": "",
+  "password": ""
 }
 
-### Signup
-POST http://localhost:9093/api/auth/local/register
+
+### Register (User)
+
+POST http://localhost:8080/api/auth/local/register
 Content-Type: application/json
 
 {
-    "username": "",
-    "email": "",
-    "password": ""
+  "username": "",
+  "email": "",
+  "password": ""
 }
 
-## Forgot Password
 
-## Profile
+### Forgot Password (User)
+
+POST http://localhost:8080/api/auth/forgot-password
+Content-Type: application/json
+
+{
+  "email": ""
+}
+
+
+### Profile (User)
+
+GET http://localhost:8080/api/users/me
+Authorization: Bearer YOUR_USER_JWT
