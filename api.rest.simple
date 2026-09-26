@@ -1,4 +1,4 @@
-# REST API
+﻿# REST API
 
 @baseUrl = http://localhost:9093
 
@@ -19,8 +19,25 @@
 @userNewPassword = {{$dotenv USER_NEW_PASSWORD}}
 @userToken = {{$dotenv USER_TOKEN}}
 
+@studentId = {{$dotenv STUDENT_ID}}
+@studentName = {{$dotenv STUDENT_NAME}}
+@studentNewName = {{$dotenv STUDENT_NEW_NAME}}
+@studentMobile = {{$dotenv STUDENT_MOBILE}}
+@studentCardId = {{$dotenv STUDENT_CARD_ID}}
+
+@subjectId = {{$dotenv SUBJECT_ID}}
+@subjectName = {{$dotenv SUBJECT_NAME}}
+@subjectNewName = {{$dotenv SUBJECT_NEW_NAME}}
+
+@teacherId = {{$dotenv TEACHER_ID}}
+@teacherName = {{$dotenv TEACHER_NAME}}
+@teacherNewName = {{$dotenv TEACHER_NEW_NAME}}
+
+@contentPublishedAt = {{$dotenv CONTENT_PUBLISHED_AT}}
+
 # 1. ADMIN SECTION
 ### 1.1 Login Admin
+# @name adminLogin
 POST {{baseUrl}}/admin/login
 Content-Type: application/json
 
@@ -32,7 +49,7 @@ Content-Type: application/json
 
 ### 1.2 Signup Admin
 # ใช้เฉพาะตอนที่ระบบยังไม่มี Admin คนแรก
-# หากมี Admin อยู่แล้ว อาจได้รับ HTTP 400
+# ถ้ามี Admin แล้ว Request นี้อาจตอบกลับ 400
 POST {{baseUrl}}/admin/register
 Content-Type: application/json
 
@@ -52,7 +69,7 @@ Content-Type: application/json
 }
 
 ### 1.3.1 Reset Password Admin
-# ต้องนำ Reset Token ที่ได้รับจาก Forgot Password ใส่ใน ADMIN_RESET_TOKEN
+# นำ resetPasswordToken ที่ได้รับจาก Forgot Password มาใส่
 POST {{baseUrl}}/admin/reset-password
 Content-Type: application/json
 
@@ -62,12 +79,13 @@ Content-Type: application/json
 }
 
 ### 1.4 Profile Admin
-# ต้องนำ Token ที่ได้รับจาก Login ใส่ใน ADMIN_TOKEN
+# ต้องยิง 1.1 Login Admin ให้สำเร็จก่อน
 GET {{baseUrl}}/admin/me
 Authorization: Bearer {{adminToken}}
 
 # 2. USER SECTION
 ### 2.1 Login User
+# @name userLogin
 POST {{baseUrl}}/api/auth/local
 Content-Type: application/json
 
@@ -77,7 +95,8 @@ Content-Type: application/json
 }
 
 ### 2.2 Signup User
-# หาก Email หรือ Username มีอยู่แล้ว อาจได้รับ HTTP 400
+# ใช้สร้างบัญชีครั้งแรก
+# สมัครซ้ำด้วย Email หรือ Username เดิมจะได้ 400
 POST {{baseUrl}}/api/auth/local/register
 Content-Type: application/json
 
@@ -96,7 +115,7 @@ Content-Type: application/json
 }
 
 ### 2.3.1 Reset Password User
-# ต้องนำ Reset Code ที่ได้รับจาก Forgot Password ใส่ใน USER_RESET_CODE
+# นำ code ที่ได้รับจาก Forgot Password มาใส่
 POST {{baseUrl}}/api/auth/reset-password
 Content-Type: application/json
 
@@ -107,6 +126,105 @@ Content-Type: application/json
 }
 
 ### 2.4 Profile User
-# ต้องนำ JWT ที่ได้รับจาก Login ใส่ใน USER_TOKEN
+# ต้องยิง 2.1 Login User ให้สำเร็จก่อน
 GET {{baseUrl}}/api/users/me
 Authorization: Bearer {{userToken}}
+
+# 3. CONTENT SECTION
+# 3.1 STUDENT
+### 3.1.1 Create Student
+POST {{baseUrl}}/api/students
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "data": {
+    "name": "{{studentName}}",
+    "mobile": "{{studentMobile}}",
+    "cardId": "{{studentCardId}}",
+    "publishedAt": "{{contentPublishedAt}}"
+  }
+}
+
+### 3.1.2 List All Students
+GET {{baseUrl}}/api/students
+Authorization: Bearer {{userToken}}
+
+### 3.1.3 List Student with ID
+GET {{baseUrl}}/api/students/{{studentId}}
+Authorization: Bearer {{userToken}}
+
+### 3.1.4 Update Student
+PUT {{baseUrl}}/api/students/{{studentId}}
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "data": {
+    "name": "{{studentNewName}}"
+  }
+}
+
+# 3.2 SUBJECT
+### 3.2.1 Create Subject
+POST {{baseUrl}}/api/subjects
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "data": {
+    "name": "{{subjectName}}",
+    "publishedAt": "{{contentPublishedAt}}"
+  }
+}
+
+### 3.2.2 List All Subjects
+GET {{baseUrl}}/api/subjects
+Authorization: Bearer {{userToken}}
+
+### 3.2.3 List Subject with ID
+GET {{baseUrl}}/api/subjects/{{subjectId}}
+Authorization: Bearer {{userToken}}
+
+### 3.2.4 Update Subject
+PUT {{baseUrl}}/api/subjects/{{subjectId}}
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "data": {
+    "name": "{{subjectNewName}}"
+  }
+}
+
+# 3.3 TEACHER
+### 3.3.1 Create Teacher
+POST {{baseUrl}}/api/teachers
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "data": {
+    "name": "{{teacherName}}",
+    "publishedAt": "{{contentPublishedAt}}"
+  }
+}
+
+### 3.3.2 List All Teachers
+GET {{baseUrl}}/api/teachers
+Authorization: Bearer {{userToken}}
+
+### 3.3.3 List Teacher with ID
+GET {{baseUrl}}/api/teachers/{{teacherId}}
+Authorization: Bearer {{userToken}}
+
+### 3.3.4 Update Teacher
+PUT {{baseUrl}}/api/teachers/{{teacherId}}
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "data": {
+    "name": "{{teacherNewName}}"
+  }
+}
